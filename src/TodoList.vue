@@ -27,12 +27,12 @@
 
 <script>
 import Todoitem from './components/Todoitem'
-
-const itemTemp = {
-  inputValue: '2 ',
-  key: '2 ',
-  value: ' 3',
-  desction: {}
+import getgroup from './api/request'
+var itemTemp = {
+  inputValue: ' ',
+  key: ' ',
+  value: ' ',
+  desction: ''
 }
 export default {
   components: {
@@ -44,24 +44,41 @@ export default {
         inputValue: ' ',
         key: ' ',
         value: ' ',
-        desction: {}
-      },{
+        desction: ''
+      },
+      {
         inputValue: ' ',
         key: ' ',
         value: ' ',
-        desction: {}
+        desction: ''
       }
       ]
     }
   },
+  created () {
+    this.getlist()
+  },
   methods: {
     Submit: function () {
-    
       this.list.push(itemTemp)
+      itemTemp = {
+        inputValue: ' ',
+        key: ' ',
+        value: ' ',
+        desction: ''
+      }
       console.log(this.list)
     },
     handleDelete: function (index) {
       this.list.splice(index, 1)
+    },
+    getlist () {
+      getgroup(1).then(response => {
+        this.list = response.data.items
+        this.total = response.data.total
+        this.listLoading = false
+        console.log(response)
+      })
     }
   }
 }
